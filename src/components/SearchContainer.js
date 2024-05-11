@@ -17,18 +17,20 @@ export const SearchContainer = ({setResults}) => {
         setItems(myData);
       }, []);
 
-    const fetchSuggestions = (value) => {
+    const fetchSuggestions = async (value) => {
         setLoading(true);
         //I've implemented fetchSuggestions in two ways:
 
-        //1. Using fetch API to get dummy data from jsonplaceholder!
+        //1. Using fetch API to get dummy data from jsonplaceholder (Uncomment/Comment the following line to test setTimeout.)
+        
+        /*
+        try{
+            const response = await fetch("https://dummyjson.com/products");
+            if(!response.ok){
+                throw new Error("Network Response was not Ok");
+            }
 
-        /*fetch("https://dummyjson.com/products")
-        .then((response) => {
-            setLoading(false);
-            return response.json()
-        })
-        .then((json) => {
+            const json = await response.json();
             const results = json.products.filter((product) => {
                 return (
                     value &&
@@ -37,10 +39,15 @@ export const SearchContainer = ({setResults}) => {
                     product.title.toLowerCase().includes(value.toLowerCase())
                 )
             });
+            setLoading(false);
             setResults(results);
-        })*/
+        }catch (error) {
+            console.error("Error fetching data:", error);
+        }
+        */
 
-        //2. Using setTimeout to mock the behaviour of a backend service
+        //2. Using setTimeout to mock the behaviour of a backend service (Uncomment/Comment the following line to test setTimeout.)
+        
         setTimeout(() => {
             const results = items.products.filter((item) => {
                 //Making sure the input field is not empty and it matches the value in the list.

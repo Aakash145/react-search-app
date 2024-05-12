@@ -11,6 +11,7 @@ export const SearchContainer = ({ setResults }) => {
     const [input, setInput] = useState("");
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [noResults, setNoResults] = useState(false);
 
     //Load Data from data.json after render
     useEffect(() => {
@@ -28,11 +29,9 @@ export const SearchContainer = ({ setResults }) => {
     };
 
     //I've implemented fetchSuggestions in two ways:
-
-    //1. Using fetch API to get dummy data from jsonplaceholder
-    const fetchSuggestionsWithFetch = async (value) => {
-        setLoading(true);
+    const fetchSuggestions = async (value) => {
         try {
+            //1. Using fetch API to get dummy data from dummyjson
             const response = await fetch("https://dummyjson.com/products");
             if (!response.ok) {
                 throw new Error("Network Response was not Ok");
@@ -47,17 +46,8 @@ export const SearchContainer = ({ setResults }) => {
                     product.title.toLowerCase().includes(value.toLowerCase())
                 )
             });
-            setLoading(false);
-            setResults(results);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    }
-
-    //2. Using setTimeout to mock the behaviour of a backend service
-    const fetchSuggestionsWithTimeout = async (value) => {
-        setLoading(true);
-        setTimeout(() => {
+            //2. Using data.json to loadData using useEffect() Hooks (Uncomment the below code to test out!)
+            /*
             const results = items.products.filter((item) => {
                 //Making sure the input field is not empty and it matches the value in the list.
                 return (
@@ -67,24 +57,23 @@ export const SearchContainer = ({ setResults }) => {
                     item.title.toLowerCase().includes(value.toLowerCase())
                 )
             });
-            setResults(results);
+            */
             setLoading(false);
-        }, 1000)
+            setResults(results);
+            setNoResults(results.length === 0); // Check if there are no results
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
     }
 
     // Debounced the fetchSuggestions function
-    const debouncedFetchSuggestionsWithFetch = debounce(fetchSuggestionsWithFetch, 1000);
-    const debouncedFetchSuggestionsWithTimeout = debounce(fetchSuggestionsWithTimeout, 1000);
-
+    const debouncedFetchSuggestions = debounce(fetchSuggestions, 3000);
 
     const handleChange = (value) => {
         setInput(value)
-        //(Uncomment/Comment the following line to test withFetch/withTimeout)
-
-        //debouncedFetchSuggestionsWithFetch(value)
-        debouncedFetchSuggestionsWithTimeout(value)
+        setLoading(true);
+        debouncedFetchSuggestions(value)
     }
-
 
     return (
         <>
@@ -104,6 +93,7 @@ export const SearchContainer = ({ setResults }) => {
                             width={200} /> : <div />
                 }
             </div>
+            {noResults && !loading && <p>No results found. Please try again.</p>}
         </>
     )
 }

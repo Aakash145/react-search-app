@@ -7,7 +7,7 @@ import { FaSearch } from 'react-icons/fa'
 import BarLoader from "react-spinners/BarLoader";
 
 
-export const SearchContainer = ({setResults}) => {
+export const SearchContainer = ({ setResults }) => {
     const [input, setInput] = useState("");
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -15,18 +15,26 @@ export const SearchContainer = ({setResults}) => {
     //Load Data from data.json after render
     useEffect(() => {
         setItems(myData);
-      }, []);
+    }, []);
 
-    const fetchSuggestions = async (value) => {
+    // Debounce function
+    const debounce = (func, delay) => {
+        let timeoutId;
+        return function (...args) {
+            const context = this;
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => func.apply(context, args), delay);
+        };
+    };
+
+    //I've implemented fetchSuggestions in two ways:
+
+    //1. Using fetch API to get dummy data from jsonplaceholder
+    const fetchSuggestionsWithFetch = async (value) => {
         setLoading(true);
-        //I've implemented fetchSuggestions in two ways:
-
-        //1. Using fetch API to get dummy data from jsonplaceholder (Uncomment/Comment the following line to test setTimeout.)
-        
-        /*
-        try{
+        try {
             const response = await fetch("https://dummyjson.com/products");
-            if(!response.ok){
+            if (!response.ok) {
                 throw new Error("Network Response was not Ok");
             }
 
@@ -41,13 +49,14 @@ export const SearchContainer = ({setResults}) => {
             });
             setLoading(false);
             setResults(results);
-        }catch (error) {
+        } catch (error) {
             console.error("Error fetching data:", error);
         }
-        */
+    }
 
-        //2. Using setTimeout to mock the behaviour of a backend service (Uncomment/Comment the following line to test setTimeout.)
-        
+    //2. Using setTimeout to mock the behaviour of a backend service
+    const fetchSuggestionsWithTimeout = async (value) => {
+        setLoading(true);
         setTimeout(() => {
             const results = items.products.filter((item) => {
                 //Making sure the input field is not empty and it matches the value in the list.
@@ -60,34 +69,41 @@ export const SearchContainer = ({setResults}) => {
             });
             setResults(results);
             setLoading(false);
-         } , 3000)
-         
+        }, 1000)
     }
+
+    // Debounced the fetchSuggestions function
+    const debouncedFetchSuggestionsWithFetch = debounce(fetchSuggestionsWithFetch, 1000);
+    const debouncedFetchSuggestionsWithTimeout = debounce(fetchSuggestionsWithTimeout, 1000);
+
 
     const handleChange = (value) => {
         setInput(value)
-        fetchSuggestions(value)
+        //(Uncomment/Comment the following line to test withFetch/withTimeout)
+
+        //debouncedFetchSuggestionsWithFetch(value)
+        debouncedFetchSuggestionsWithTimeout(value)
     }
 
 
-  return (
-    <>
-    <div className='input-wrapper'>
-        <FaSearch id='search-icon' />
-        <input 
-            placeholder='Type to search...' 
-            value={input} 
-            onChange={(e) => handleChange(e.target.value)} />
-        </div>
-        <div className='bar-loader'>
-            {
-                loading? 
-                    <BarLoader
-                        color="#4169e1"
-                        height={5}
-                        width={200} /> : <div />
-            }
-        </div>
-    </>
-  )
+    return (
+        <>
+            <div className='input-wrapper'>
+                <FaSearch id='search-icon' />
+                <input
+                    placeholder='Type to search...'
+                    value={input}
+                    onChange={(e) => handleChange(e.target.value)} />
+            </div>
+            <div className='bar-loader'>
+                {
+                    loading ?
+                        <BarLoader
+                            color="#4169e1"
+                            height={5}
+                            width={200} /> : <div />
+                }
+            </div>
+        </>
+    )
 }

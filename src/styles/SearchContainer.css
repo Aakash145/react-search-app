@@ -1,10 +1,10 @@
 .input-wrapper {
-    background-color: white;
+    background-color: #f7f7f7;
     width: 100%;
-    border-radius: 10px;
-    height: 2.5rem;
-    padding: 0 15px;
-    box-shadow: 0px 0px 8px #ddd;
+    border-radius: 20px;
+    height: 3rem;
+    padding: 0 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
 }
@@ -13,9 +13,10 @@ input {
     background-color: transparent;
     border: none;
     height: 100%;
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     width: 100%;
-    margin-left: 5px;
+    margin-left: 10px;
+    color: #333;
 }
 
 input:focus {
@@ -23,7 +24,13 @@ input:focus {
 }
 
 #search-icon {
-    color: royalblue;
+    color: #ff6347;
+    margin-right: 10px;
+}
+
+#clear-icon {
+    margin-left: auto; 
+    cursor: pointer;
 }
 
 .bar-loader {
@@ -31,7 +38,23 @@ input:focus {
 }
 
 @media only screen and (max-width: 600px) {
-    .bar-loader {
-      max-width: fit-content;
+    .input-wrapper {
+        padding: 0 15px;
     }
-  }
+  
+    input {
+        font-size: 1.2rem;
+    }
+  
+    #search-icon {
+        margin-right: 5px;
+    }
+  
+    #clear-icon {
+        margin-right: 5px;
+    }
+  
+    .bar-loader {
+        max-width: fit-content;
+    }
+}

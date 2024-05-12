@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
       <div className='search-bar-container'>
-        <div id='search-title'>Curious Search</div>
+        <div id='search-title'>The Curious Search!</div>
         <SearchContainer setResults={setResults}/>
         <SuggestionsList results={results} />
       </div>

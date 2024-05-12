@@ -1,10 +1,16 @@
 * {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
   background-color: aliceblue;
 }
 
-.search-bar-container{
-  padding-top: 30vh;
-  width: 40%;
+.search-bar-container {
+  padding-top: 20vh;
+  width: 60%;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -12,22 +18,18 @@
   min-width: 200px;
 }
 
-#search-title{
-        font-family: Comic Sans MS;
-        font-size:35px;
-        color:#000000;
-        font-weight:bold;
-        font-style:normal;
-        text-decoration:none;
-        text-transform: capitalize;
-        letter-spacing: 1px;
-        word-spacing: 2px;
-        margin-bottom: 10%;
+#search-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5rem;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 5%;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
-
 
 @media only screen and (max-width: 600px) {
   #search-title {
-    font-size:25px;
+      font-size: 2rem;
   }
 }

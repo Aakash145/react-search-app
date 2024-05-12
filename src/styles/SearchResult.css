@@ -1,7 +1,11 @@
-.search-result{
-    padding: 10px 20px;
+.search-result {
+    padding: 15px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
 }
 
-.search-result:hover{
-    background-color: #efefef;
+.search-result:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
